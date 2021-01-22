@@ -1,0 +1,87 @@
+package Inlupp1;
+
+import java.util.*;
+import java.util.stream.Collectors;
+
+public class MainThree {
+
+    public static void main(String[] args) {
+
+        List<MyObject> newArray = new ArrayList<>();
+        generatingMethod(newArray);
+        System.out.println("50 random generated instances: ");//for formatting
+        System.out.println(newArray.toString());
+        System.out.println("**********"); //for formatting
+        valuesAbove20(newArray);
+        averageOfValues(newArray);
+        thisIsTrue(newArray);
+    }
+
+    public static int randomInt() {
+        return (int) (Math.random() * 50 + 1);
+    }
+
+    public static boolean randomBoolean() {
+        Random randomBool = new Random();
+        return randomBool.nextBoolean();
+    }
+
+    public static String randomString() {
+        String aToö = "abcdefghijklmnopqrstuvwxyzåäö";
+        Random randomString = new Random();
+        StringBuilder sBuild = new StringBuilder();
+        for (int i = 0; i < 12; i++) {
+            int randomIndex = randomString.nextInt(aToö.length());
+            sBuild.append(aToö.charAt(randomIndex));
+        }
+        return sBuild.toString();
+    }
+
+    public static void generatingMethod(List<MyObject> newArray) {
+
+        for (int i = 0; i < 50; i++) {
+            newArray.add(new MyObject(randomBoolean(), randomInt(), randomString()));
+        }
+    }
+
+    public static void valuesAbove20(List<MyObject> newArray) {
+
+        List<MyObject> above20 = newArray
+                .stream()
+                .filter(x -> x.getValue() > 20)
+                .collect(Collectors.toList());
+
+        System.out.println("Values above 20: "); //for formatting
+
+        for (MyObject myObject : above20) {
+            System.out.println("Boolean: " + myObject.getBool() +
+                    " Name: " + myObject.getName() +
+                    " Value:" + myObject.getValue());
+        }
+        System.out.println("**********"); //for formatting
+    }
+
+    public static void averageOfValues(List<MyObject> newArray) {
+        OptionalDouble averageValue = newArray
+                .stream()
+                .mapToDouble(MyObject::getValue)
+                .average();
+
+        System.out.println("Average: " + averageValue);
+        System.out.println();
+        System.out.println("**********"); //for formatting
+    }
+
+    public static void thisIsTrue(List<MyObject> newArray) {
+        List<MyObject> newList = newArray
+                .stream()
+                .filter(MyObject::getBool)
+                .peek(x -> {
+                    if (x.getBool()) {
+                        x.setName("This Is True");
+                    }
+                })
+                .peek(System.out::println)
+                .collect(Collectors.toList());
+    }
+}
