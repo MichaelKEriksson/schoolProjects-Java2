@@ -39,7 +39,7 @@ public class MainOne {
         long newArray = myList.stream()
                 .distinct()
                 .count();
-
+                
         System.out.println("Number of unique words: " + newArray);
     }
 
